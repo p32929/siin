@@ -1,8 +1,8 @@
-use std::io;
+use std::{io, path::PathBuf};
 
 use reqwest::{header::CONTENT_DISPOSITION, Error, Url};
 use serde::{Deserialize, Serialize};
-use trauma::download::Download;
+use trauma::{download::Download, downloader::DownloaderBuilder};
 use validator::Validate;
 
 #[tokio::main]
@@ -15,7 +15,7 @@ async fn main() -> Result<(), ()> {
     let list = get_apps_list(&url).await.unwrap_or(vec![]);
     let mut downloads: Vec<Download> = vec![];
 
-    for (pos, item) in list.iter().enumerate() {
+    for (_pos, item) in list.iter().enumerate() {
         let file_name = get_filename(item.url.as_str()).await;
         downloads.push(Download::new(
             &Url::parse(item.url.as_str()).unwrap(),
@@ -52,5 +52,8 @@ async fn get_filename(url: &str) -> String {
 }
 
 async fn download_files(downloads: Vec<Download>) {
-    //
+    let downloader = DownloaderBuilder::new()
+        .directory(PathBuf::from("output"))
+        .build();
+    downloader.download(&downloads).await;
 }
