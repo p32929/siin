@@ -1,4 +1,4 @@
-use std::{io, path::PathBuf};
+use std::{io, path::PathBuf, process::Command, env};
 
 use reqwest::{header::CONTENT_DISPOSITION, Error, Url};
 use serde::{Deserialize, Serialize};
@@ -7,6 +7,7 @@ use validator::Validate;
 
 #[tokio::main]
 async fn main() -> Result<(), ()> {
+    println!("{:?}", env::current_dir().unwrap());
     println!("A cross-platform silent installer written in Rust. Enjoy!");
     println!("Enter the URL: ");
     let mut url = String::new();
@@ -17,14 +18,11 @@ async fn main() -> Result<(), ()> {
 
     for (_pos, item) in list.iter().enumerate() {
         let file_name = get_filename(item.url.as_str()).await;
-        downloads.push(Download::new(
-            &Url::parse(item.url.as_str()).unwrap(),
-            &file_name,
-        ));
+        let url = Url::parse(item.url.as_str()).unwrap();
+        downloads.push(Download::new(&url, &file_name));
     }
-
-    download_files(downloads).await;
-
+    download_files(&downloads).await;
+    install_downloaded(&downloads);
     Ok(())
 }
 
@@ -51,9 +49,36 @@ async fn get_filename(url: &str) -> String {
     trimmed_file_name.to_string()
 }
 
-async fn download_files(downloads: Vec<Download>) {
+async fn download_files(downloads: &Vec<Download>) {
     let downloader = DownloaderBuilder::new()
         .directory(PathBuf::from("output"))
         .build();
+
+    println!("Files are gonna be in the output folder");
     downloader.download(&downloads).await;
+}
+
+fn run_install_commands(command_str: &str) {
+    let windows_os = "windows";
+    let command_types = {
+        if windows_os == std::env::consts::OS {
+            ("cmd", "/C")
+        } else {
+            ("sh", "-c")
+        }
+    };
+
+    let mut command = Command::new(command_types.0);
+    command.arg(command_types.1);
+    command.arg(command_str);
+    command.current_dir(env::current_dir().unwrap());
+    let mut child = command.spawn().unwrap();
+    child.wait().unwrap();
+}
+
+fn install_downloaded(downloads: &Vec<Download>) {
+    // for (_pos, item) in downloads.iter().enumerate() {
+    //     let command_str = format!("output {} /exenoui /qn", item.filename);
+    //     run_install_commands(&command_str);
+    // }
 }
