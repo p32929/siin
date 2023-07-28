@@ -11,25 +11,28 @@ use validator::Validate;
 
 #[tokio::main]
 async fn main() -> Result<(), ()> {
-    println!("{:?}", env::current_dir().unwrap().to_str().unwrap());
     println!("A cross-platform silent installer written in Rust. Enjoy!");
     println!("Enter the URL: ");
     let mut url = String::new();
     io::stdin().read_line(&mut url).unwrap_or(0);
     let url = url.trim();
+
     let app_list = get_apps_list(&url).await.unwrap_or(vec![]);
     let mut downloads: Vec<Download> = vec![];
 
     for (_pos, item) in app_list.iter().enumerate() {
         let mut file_name = get_filename(item.url.as_str()).await;
         let url = Url::parse(item.url.as_str()).unwrap();
+
         if file_name.is_empty() {
             file_name = get_filename_from_url(&item.url).unwrap();
         }
         downloads.push(Download::new(&url, &file_name));
     }
+
     download_files(&downloads).await;
     install_downloaded(&downloads, &app_list);
+
     Ok(())
 }
 
@@ -38,7 +41,7 @@ struct SiinList {
     title: String,
     url: String,
     #[serde(default)]
-    alt_arg: String,
+    alt: String,
 }
 
 async fn get_apps_list(url_string: &str) -> Result<Vec<SiinList>, Error> {
@@ -66,7 +69,6 @@ async fn download_files(downloads: &Vec<Download>) {
         .directory(PathBuf::from("output"))
         .build();
 
-    println!("Files are gonna be in the output folder");
     downloader.download(&downloads).await;
 }
 
@@ -111,7 +113,7 @@ fn run_install_commands(command_str: &str) {
 
 fn install_downloaded(downloads: &Vec<Download>, app_list: &Vec<SiinList>) {
     for (pos, item) in downloads.iter().enumerate() {
-        let install_arg = &app_list[pos].alt_arg;
+        let install_arg = &app_list[pos].alt;
         let mut command_str = String::default();
         if install_arg.is_empty() {
             if item.filename.ends_with(".exe") {
@@ -123,6 +125,7 @@ fn install_downloaded(downloads: &Vec<Download>, app_list: &Vec<SiinList>) {
             command_str = format!("{} {}", item.filename, install_arg);
         }
 
+        println!("Installing {}", item.filename);
         run_install_commands(&command_str);
     }
 }
