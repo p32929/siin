@@ -6,7 +6,10 @@ use std::{
 
 use reqwest::{header::CONTENT_DISPOSITION, Error, Url};
 use serde::{Deserialize, Serialize};
-use trauma::{download::Download, downloader::DownloaderBuilder};
+use trauma::{
+    download::{Download, Summary},
+    downloader::DownloaderBuilder,
+};
 use validator::Validate;
 
 #[tokio::main]
@@ -30,8 +33,28 @@ async fn main() -> Result<(), ()> {
         downloads.push(Download::new(&url, &file_name));
     }
 
-    download_files(&downloads).await;
-    install_downloaded(&downloads, &app_list);
+    let download_res = download_files(&downloads).await;
+    let mut is_failed = false;
+    for (_, item) in download_res.iter().enumerate() {
+        match item.status() {
+            trauma::download::Status::Fail(_) => {
+                is_failed = true;
+                break;
+            }
+            trauma::download::Status::NotStarted => todo!(),
+            trauma::download::Status::Skipped(_) => todo!(),
+            trauma::download::Status::Success => todo!(),
+        }
+    }
+    if is_failed {
+        println!("One or more downloads failed");
+    } else {
+        install_downloaded(&downloads, &app_list);
+        println!("Done!!!");
+    }
+    let mut exit = String::new();
+    println!("Hit enter to exit");
+    io::stdin().read_line(&mut exit).unwrap_or(0);
 
     Ok(())
 }
@@ -64,12 +87,12 @@ async fn get_filename(url: &str) -> String {
     }
 }
 
-async fn download_files(downloads: &Vec<Download>) {
+async fn download_files(downloads: &Vec<Download>) -> Vec<Summary> {
     let downloader = DownloaderBuilder::new()
         .directory(PathBuf::from("output"))
         .build();
 
-    downloader.download(&downloads).await;
+    downloader.download(&downloads).await
 }
 
 fn run_install_commands(command_str: &str) {
