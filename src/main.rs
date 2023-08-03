@@ -117,7 +117,7 @@ fn install_downloaded(downloads: &Vec<Download>, app_list: &Vec<SiinList>) {
         let mut command_str = String::default();
         if install_arg.is_empty() {
             if item.filename.ends_with(".exe") {
-                command_str = format!("{} /S", item.filename);
+                command_str = format!("{} /S /VERYSILENT", item.filename);
             } else if item.filename.ends_with(".msi") {
                 command_str = format!("msiexec /i {} /qn", item.filename,);
             }
