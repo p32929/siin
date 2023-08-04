@@ -51,7 +51,7 @@ async fn main() -> Result<(), ()> {
 
     download_files(&downloads).await;
     install_downloaded(&downloads, &app_list);
-    println!(":: Done!!!");
+    println!("\n:: All Done!!!");
     let mut exit = String::new();
     println!(":: Hit enter to exit");
     io::stdin().read_line(&mut exit).unwrap_or(0);
