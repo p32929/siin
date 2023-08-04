@@ -27,6 +27,17 @@ or using cargo `cargo install siin`
 5. Paste the URL and Hit enter
 6. Done!!!
 
+## JSON structure
+```
+[
+    {
+        "title":"name of the app",
+        "url":"direct_download_link_of_the_app",
+        "alt": "if you want to pass any argument to the installer. Like VS code has some arguments. More info here: https://silentinstallhq.com/visual-studio-code-silent-install-how-to-guide/ "
+    }
+]
+```
+
 ## How to contribute?
 * First discuss the issue by creating a new issue. 
 * Don't make pull requests by changing the readme file without discussing.
