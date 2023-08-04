@@ -1,5 +1,5 @@
 ## SIIN
-A silent installer ( currently only for Windows ) made using Rust
+A silent installer ( currently only for Windows ) written in Rust 🦀
 
 ## Share with your friends and family
 
