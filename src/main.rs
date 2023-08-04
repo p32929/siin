@@ -34,6 +34,7 @@ async fn main() -> Result<(), ()> {
     println!("\n:: Hit enter to start");
     let mut downloads: Vec<Download> = vec![];
     io::stdin().read_line(&mut input).unwrap_or(0);
+    println!("\n:: Downloading. Please wait...");
 
     for (_pos, item) in app_list.iter().enumerate() {
         let mut file_name = get_filename(item.url.as_str()).await;
