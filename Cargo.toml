@@ -16,7 +16,7 @@ keywords = [
     "ninite",
     "ninite alternative",
 ]
-description = "A silent installer ( currently only for Windows ) written in Rust"
+description = "A silent installer ( currently only for Windows ) written in Rust. Works kinda like Ninite"
 categories = ["accessibility", "command-line-interface"]
 exclude = [".vscode/*", "output"]
 

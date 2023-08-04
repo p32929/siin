@@ -1,5 +1,5 @@
 ## SIIN
-A silent installer ( currently only for Windows ) written in Rust 🦀
+A silent installer ( currently only for Windows ) written in Rust 🦀 It downloads and installs a list of apps silently, kinda like Ninite ( https://ninite.com/ )
 
 ## Share with your friends and family
 
