@@ -18,7 +18,7 @@ keywords = [
 ]
 description = "A silent installer ( currently only for Windows ) written in Rust. Works kinda like Ninite"
 categories = ["accessibility", "command-line-interface"]
-exclude = [".vscode/*", "output"]
+exclude = [".vscode/*"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
