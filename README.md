@@ -1,6 +1,8 @@
 ## SIIN
 A silent installer ( currently only for Windows ) written in Rust 🦀 It downloads and installs a list of apps silently, kinda like Ninite ( https://ninite.com/ )
 
+![siin](https://github.com/p32929/siin/assets/6418354/c6920f4a-f271-4e34-aeab-9811039a9a0e)
+
 ## Share with your friends and family
 
 [![facebook](https://user-images.githubusercontent.com/6418354/179013321-ac1d1452-0689-493f-9066-940cf2302b6e.png)](https://www.facebook.com/sharer/sharer.php?u=https://github.com/p32929/siin)
