@@ -21,6 +21,9 @@ or using cargo `cargo install siin`
 2. Host the JSON file in https://gist.github.com/ or https://www.npoint.io/ or https://pastebin.com/ or anywhere you like
 3. Get the URL 
 4. Run SIIN CLI as Admin
+    > If you have downloaded the EXE file from the release, just run the exe file as administrator
+    
+    > If you have installed siin using cargo, start CMD ( command prompt ) as administrator then run siin
 5. Paste the URL and Hit enter
 6. Done!!!
 

@@ -2,7 +2,23 @@
 name = "siin"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+homepage = "https://github.com/p32929/siin"
+repository = "https://github.com/p32929/siin"
+readme = "README.md"
+keywords = [
+    "silent",
+    "installer",
+    "windows",
+    "windows 10",
+    "windows 11",
+    "windows 7",
+    "ninite",
+    "ninite alternative",
+]
 description = "A silent installer ( currently only for Windows ) written in Rust"
+categories = ["accessibility", "command-line-interface"]
+exclude = [".vscode/*", "output"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
