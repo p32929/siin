@@ -24,6 +24,10 @@ or using cargo `cargo install siin`
 5. Paste the URL and Hit enter
 6. Done!!!
 
+## How to contribute?
+* First discuss the issue by creating a new issue. 
+* Don't make pull requests by changing the readme file without discussing.
+
 ## License
 ```
 MIT License
