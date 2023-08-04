@@ -33,7 +33,7 @@ or using cargo `cargo install siin`
     {
         "title":"name of the app",
         "url":"direct_download_link_of_the_app",
-        "alt": "if you want to pass any argument to the installer. Like VS code has some arguments. More info here: https://silentinstallhq.com/visual-studio-code-silent-install-how-to-guide/ "
+        "alt": "Optional, but if you want to pass any argument to the installer. Like VS code has some arguments. More info here: https://silentinstallhq.com/visual-studio-code-silent-install-how-to-guide/ "
     }
 ]
 ```
