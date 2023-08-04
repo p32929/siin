@@ -14,46 +14,45 @@ use validator::Validate;
 
 #[tokio::main]
 async fn main() -> Result<(), ()> {
-    println!("A cross-platform silent installer written in Rust. Enjoy!");
-    println!("Enter the URL: ");
-    let mut url = String::new();
-    io::stdin().read_line(&mut url).unwrap_or(0);
-    let url = url.trim();
+    println!("::::::::::::::::::::::::::::::::::::::::::");
+    println!(":::                SIIN                :::");
+    println!(":::  Silent installer written in Rust  :::");
+    println!("::: Readme: http://tiny.cc/siin_how_to :::");
+    println!("::::::::::::::::::::::::::::::::::::::::::\n");
+
+    println!(":: Enter AppList.json URL: ");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap_or(0);
+    let url = input.trim();
 
     let app_list = get_apps_list(&url).await.unwrap_or(vec![]);
+    println!("\n:: Apps to be installed:");
+    for (pos, item) in app_list.iter().enumerate() {
+        println!(":: {}. {}", pos + 1, item.title);
+    }
+
+    println!("\n:: Hit enter to start");
     let mut downloads: Vec<Download> = vec![];
+    io::stdin().read_line(&mut input).unwrap_or(0);
 
     for (_pos, item) in app_list.iter().enumerate() {
         let mut file_name = get_filename(item.url.as_str()).await;
         let url = Url::parse(item.url.as_str()).unwrap();
 
         if file_name.is_empty() {
-            file_name = get_filename_from_url(&item.url).unwrap();
+            let file_name_from_server = get_filename_from_url(&item.url).unwrap();
+            if !file_name_from_server.is_empty() {
+                file_name = file_name_from_server;
+            }
         }
         downloads.push(Download::new(&url, &file_name));
     }
 
-    let download_res = download_files(&downloads).await;
-    let mut is_failed = false;
-    for (_, item) in download_res.iter().enumerate() {
-        match item.status() {
-            trauma::download::Status::Fail(_) => {
-                is_failed = true;
-                break;
-            }
-            trauma::download::Status::NotStarted => todo!(),
-            trauma::download::Status::Skipped(_) => todo!(),
-            trauma::download::Status::Success => todo!(),
-        }
-    }
-    if is_failed {
-        println!("One or more downloads failed");
-    } else {
-        install_downloaded(&downloads, &app_list);
-        println!("Done!!!");
-    }
+    download_files(&downloads).await;
+    install_downloaded(&downloads, &app_list);
+    println!(":: Done!!!");
     let mut exit = String::new();
-    println!("Hit enter to exit");
+    println!(":: Hit enter to exit");
     io::stdin().read_line(&mut exit).unwrap_or(0);
 
     Ok(())
@@ -121,16 +120,16 @@ fn run_install_commands(command_str: &str) {
     // Way2
     let mut child = command
         .spawn()
-        .map_err(|e| format!("Error executing the installer: {:?}", e))
+        .map_err(|e| format!(":: Error executing the installer: {:?}", e))
         .unwrap();
     let status = child
         .wait()
-        .map_err(|e| format!("Error waiting for the installer: {:?}", e))
+        .map_err(|e| format!(":: Error waiting for the installer: {:?}", e))
         .unwrap();
     if status.success() {
-        println!("done: {}", command_str);
+        println!(":: done: {}", command_str);
     } else {
-        println!("Err: {} : {}", command_str, status.code().unwrap());
+        println!(":: Err: {} : {}", command_str, status.code().unwrap_or_default());
     }
 }
 
@@ -148,7 +147,7 @@ fn install_downloaded(downloads: &Vec<Download>, app_list: &Vec<SiinList>) {
             command_str = format!("{} {}", item.filename, install_arg);
         }
 
-        println!("Installing {}", item.filename);
+        println!(":: Installing {}", item.filename);
         run_install_commands(&command_str);
     }
 }
