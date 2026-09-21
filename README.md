@@ -1,5 +1,8 @@
-## SIIN
-A silent installer ( currently only for Windows ) written in Rust 🦀 It downloads and installs a list of apps silently, kinda like Ninite ( https://ninite.com/ )
+# siin
+
+A silent batch installer for Windows, written in Rust 🦀 — give it a JSON list of apps and it downloads and installs them all silently, one after another. Like [Ninite](https://ninite.com/), but the list is yours and the source is open.
+
+On [crates.io](https://crates.io/crates/siin).
 
 ![siin](https://github.com/p32929/siin/assets/6418354/c6920f4a-f271-4e34-aeab-9811039a9a0e)
 
